@@ -16,14 +16,17 @@ def main():
     max_hex = args.x
   
   print("Generating...")
+  generate(file_count, max_hex)
+  
+  print("Complete")
+
+def generate(file_count, max_hex):
   for i in range(file_count):
     filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
     with open(filename, 'wb') as f:
       result = generate_bin_file(max_hex)
       
       f.write(result)
-  
-  print("Complete")
 
 def generate_bin_file(max_hex):
   r = random.randint(50, max_hex)
