@@ -9,7 +9,7 @@ def main():
   
   file_count = 10
   max_hex = 100
-  folder_count = 1
+  folder_count = None
   
   if args.n:
     file_count = args.n
@@ -19,23 +19,28 @@ def main():
     folder_count = args.f
   
   print("Generating...")
-  generate(file_count, max_hex, folder_count)
+  run(file_count, max_hex, folder_count)
   
   print("Complete")
 
-def generate(file_count, max_hex, folder_count):
-  for f in range(folder_count):
-    folder_name = str(f)
-    os.mkdir(folder_name)
-  
-    current_path = folder_name + '/'
-  
-    for i in range(file_count):
-      filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-      with open(current_path + filename, 'wb') as f:
-        result = generate_bin_file(max_hex)
-        
-        f.write(result)
+def run(file_count, max_hex, folder_count):
+  if folder_count == None:
+    generate(file_count, max_hex, '')
+  else:
+    for f in range(folder_count):
+      folder_name = str(f)
+      os.mkdir(folder_name)
+      current_path = folder_name + '/'
+
+      generate(file_count, max_hex, current_path)
+
+def generate(file_count, max_hex, current_path):
+  for i in range(file_count):
+    filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+    with open(current_path + filename, 'wb') as f:
+      result = generate_bin_file(max_hex)
+      
+      f.write(result)
 
 def generate_bin_file(max_hex):
   base = 50
@@ -56,19 +61,19 @@ def init_args():
 
 def check_args(args):
   # check -n
-  if args.n < 0:
+  if args.n and args.n < 0:
     print("invalid value for number of files (-n)")
     print("Program aborted")
     sys.exit()
   
   # check -x
-  if args.x < 0:
+  if args.x and args.x < 0:
     print("invalid value for max hex (-x)")
     print("Program aborted")
     sys.exit()
   
   # check -f
-  if args.f < 0:
+  if args.f and args.f < 0:
     print("invalud value for number of folders (-f)")
     print("Program aborted")
     sys.exit()
