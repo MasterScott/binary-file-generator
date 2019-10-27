@@ -38,7 +38,11 @@ def generate(file_count, max_hex, folder_count):
         f.write(result)
 
 def generate_bin_file(max_hex):
-  r = random.randint(50, max_hex)
+  base = 50
+  if max_hex < 50:
+    base = 0
+  
+  r = random.randint(base, max_hex)
   token = secrets.token_hex(r)
   return bytes.fromhex(token)
 
@@ -48,8 +52,29 @@ def init_args():
   parser.add_argument('-x', type=int, help='define max hex for single file')
   parser.add_argument('-f', type=int, help='define number of folders')
   
-  return parser.parse_args()
-      
+  return check_args(parser.parse_args())
+
+def check_args(args):
+  # check -n
+  if args.n < 0:
+    print("invalid value for number of files (-n)")
+    print("Program aborted")
+    sys.exit()
+  
+  # check -x
+  if args.x < 0:
+    print("invalid value for max hex (-x)")
+    print("Program aborted")
+    sys.exit()
+  
+  # check -f
+  if args.f < 0:
+    print("invalud value for number of folders (-f)")
+    print("Program aborted")
+    sys.exit()
+  
+  return args
+  
 if __name__ == "__main__":
   main()
   
