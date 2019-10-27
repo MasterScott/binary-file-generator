@@ -16,7 +16,7 @@ optional arguments:
 ## Default Values
 * `-n` : 10
 * `-x` : 100
-* `-x` : `None`
+* `-f` : `None`
 
 ## Example
 Creating 100 files in current dir
